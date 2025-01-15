@@ -9,7 +9,7 @@ import pyfiglet
 import pyperclip 
 from dotenv import load_dotenv
 # change script dir sesuai directory anda
-script_dir = '/opt/starpass/.env'
+script_dir = '/opt/Starpass/.env'
 dotenv_path = os.path.join(script_dir)
 load_dotenv(dotenv_path=dotenv_path)
 
@@ -73,7 +73,7 @@ def encrypt_password(password, custom_salt=None):
     encrypted_password = base64.urlsafe_b64encode(key).decode()  # Encode key to base64 and decode to string
     return encrypted_password
 
-def display_output(output, length=None):
+def display_output(output, length):
     password = []
     for i in range(length - 2):
         password.append(output[i])
@@ -83,9 +83,10 @@ def display_output(output, length=None):
         middle_index = len(password) // 2 + 1
     secret_char1 = os.getenv('SECRET1')
     secret_char2 = os.getenv('SECRET2')
-    password = password[:middle_index] + [secret_char1] + password[middle_index:]
-    password.insert(-3, "@")
-    password_str = ''.join(password)
+
+    password = password[:middle_index] + [secret_char1]+ password[middle_index:] 
+    password.insert(-3, secret_char2)
+    password_str = ''.join(str(char) for char in password)
     if length and len(output) > length:
         
         masked_output = '*' * length
